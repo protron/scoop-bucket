@@ -12,6 +12,7 @@
         "    New-Item \"$dir\\settings.ini\" -Type File -Force | Out-Null",
         "}"
     ],
+    "bin": "desktop-icon-backup-manager.exe",
     "shortcuts": [
         [
             "desktop-icon-backup-manager.exe",
