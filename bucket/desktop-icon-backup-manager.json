@@ -7,7 +7,10 @@
     "hash": "d05ef89974fa726d57f8f99fe7ea8a5bdf38b33e29c7d63ab8df2619e653313a",
     "pre_install": [
         "$exefile = (Get-ChildItem \"$dir\" '*.exe' | Select-Object -First 1).FullName",
-        "Rename-Item \"$exefile\" \"$dir\\desktop-icon-backup-manager.exe\""
+        "Rename-Item \"$exefile\" \"$dir\\desktop-icon-backup-manager.exe\"",
+        "if(!(Test-Path \"$persist_dir\\settings.ini\")) {",
+        "    New-Item \"$dir\\settings.ini\" -Type File -Force | Out-Null",
+        "}"
     ],
     "shortcuts": [
         [
