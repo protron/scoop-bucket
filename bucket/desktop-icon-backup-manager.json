@@ -7,9 +7,18 @@
     "hash": "d05ef89974fa726d57f8f99fe7ea8a5bdf38b33e29c7d63ab8df2619e653313a",
     "pre_install": [
         "$exefile = (Get-ChildItem \"$dir\" '*.exe' | Select-Object -First 1).FullName",
-        "Rename-Item \"$exefile\" \"$dir\\desktop-icon-backup-manager.exe\"",
-        "if(!(Test-Path \"$persist_dir\\settings.ini\")) {",
-        "    New-Item \"$dir\\settings.ini\" -Type File -Force | Out-Null",
+        "Rename-Item \"$exefile\" \"$dir\\desktop-icon-backup-manager.exe\" -Force",
+        "# Create settings.ini in persist directory if it doesn't exist",
+        "if (!(Test-Path \"$persist_dir\\settings.ini\")) {",
+        "    New-Item \"$persist_dir\\settings.ini\" -Type File -Force | Out-Null",
+        "}"
+    ],
+    "post_install": [
+        "# Ensure settings.ini exists in app directory and is linked to persist",
+        "if (!(Test-Path \"$dir\\settings.ini\")) {",
+        "    if (Test-Path \"$persist_dir\\settings.ini\") {",
+        "        New-Item -ItemType HardLink -Path \"$dir\\settings.ini\" -Target \"$persist_dir\\settings.ini\" -Force | Out-Null",
+        "    }",
         "}"
     ],
     "bin": "desktop-icon-backup-manager.exe",
@@ -27,6 +36,7 @@
         "github": "https://github.com/mapi68/desktop-icon-backup-manager"
     },
     "autoupdate": {
-        "url": "https://github.com/mapi68/desktop-icon-backup-manager/releases/download/v$version/desktop-icon-backup-manager.zip"
+        "url": "https://github.com/mapi68/desktop-icon-backup-manager/releases/download/v$version/desktop-icon-backup-manager.zip",
+        }
     }
 }
